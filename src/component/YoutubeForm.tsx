@@ -7,6 +7,11 @@ type FormValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    twitter: string;
+    facebook: string;
+  };
+  phoneNumbers: string[];
 };
 
 export const YoutubeForm = () => {
@@ -15,6 +20,11 @@ export const YoutubeForm = () => {
       username: "",
       email: "",
       channel: "",
+      social: {
+        twitter: "",
+        facebook: "",
+      },
+      phoneNumbers: ["", ""],
     },
 
     // {
@@ -105,6 +115,66 @@ export const YoutubeForm = () => {
             <label htmlFor="channel">Channel</label>
           )}
           <input type="text" id="channel" {...register("channel")} />
+        </div>
+
+        <div className="form-control">
+          {errors.social?.twitter ? (
+            <label className="error">{errors.social.twitter.message}</label>
+          ) : (
+            <label htmlFor="twitter">Twitter</label>
+          )}
+          <input
+            type="email"
+            id="twitter"
+            {...register("social.twitter", {
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@x\.com$/i,
+                message: "Twitter email must end with @x.com",
+              },
+            })}
+          />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="facebook">Facebook</label>
+          <input
+            type="text"
+            id="facebook"
+            {...register("social.facebook", {
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@meta\.com$/i,
+                message: "Facebook email must end with @meta.com",
+              },
+            })}
+          />
+        </div>
+
+        <div className="form-control">
+          {errors.phoneNumbers?.[0] ? (
+            <label className="error">{errors.phoneNumbers[0].message}</label>
+          ) : (
+            <label htmlFor="primary-phone-number">Primary Phone Number</label>
+          )}
+          <input
+            type="text"
+            id="primary-phone"
+            {...register("phoneNumbers.0", {
+              required: { value: true, message: "Primary phone is required" },
+              pattern: {
+                value: /^[6-9]\d{9}$/,
+                message: "Invalid phone number",
+              },
+            })}
+          />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="secondary-phone">Secondary Phone Number</label>
+          <input
+            type="text"
+            id="secondary-phone"
+            {...register("phoneNumbers.1")}
+          />
         </div>
 
         <button>Submit</button>
